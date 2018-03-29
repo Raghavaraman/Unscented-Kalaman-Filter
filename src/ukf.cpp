@@ -178,7 +178,7 @@ void UKF::Prediction(double delta_t) {
 
 
   //create square root matrix
-   MatrixXd L = P_aug.llt().matrixL();
+   MatrixXd S = P_aug.llt().matrixL();
 
    MatrixXd Xsig_aug = MatrixXd::Zero(n_aug_, 2*n_aug_+1);
 
@@ -188,8 +188,8 @@ void UKF::Prediction(double delta_t) {
 
   for (int i = 0; i< n_aug_; i++)
   {
-    Xsig_aug.col(i+1)       = x_aug + sqrt(lambda_+n_aug_) * L.col(i);
-    Xsig_aug.col(i+1+n_aug_) = x_aug - sqrt(lambda_+n_aug_) * L.col(i);
+    Xsig_aug.col(i+1)       = x_aug + sqrt(lambda_+n_aug_) * S.col(i);
+    Xsig_aug.col(i+1+n_aug_) = x_aug - sqrt(lambda_+n_aug_) * S.col(i);
   }
 
   for (int i = 0; i< n_sig_;i++)
@@ -306,7 +306,7 @@ void UKF::UpdateLidar(MeasurementPackage meas_package) {
 
   const double nis = y.transpose() * S_inv * y;
   std::cout << "LIDAR NIS: " << nis << std::endl;
-  cout<<P_<<endl;
+
 
 }
 
